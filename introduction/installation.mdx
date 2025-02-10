@@ -1,0 +1,135 @@
+---
+title: Installation
+description: "Learn how to install and activate JWT Auth Pro on your WordPress site"
+---
+
+## Prerequisites
+
+Before installing JWT Auth Pro, ensure your system meets these requirements:
+
+<CardGroup cols={2}>
+  <Card title="WordPress" icon="wordpress">
+    WordPress 6.0 or higher
+  </Card>
+  <Card title="PHP" icon="php">
+    PHP 8.1 or higher
+  </Card>
+  <Card title="SSL" icon="lock">
+    Valid SSL certificate for production use
+  </Card>
+  <Card title="REST API" icon="code">
+    WordPress REST API enabled
+  </Card>
+</CardGroup>
+
+## Upgrading from Free Version
+
+If you're currently using the [JWT Authentication for WP REST API](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/) plugin, upgrading to JWT Auth Pro is seamless:
+
+<Steps>
+  <Step title="Purchase Pro License">
+    Get your JWT Auth Pro license from [our website](https://jwtauth.pro)
+  </Step>
+  <Step title="Deactivate Free Plugin">
+    Go to **Plugins > Installed Plugins** and deactivate the free "JWT Authentication for WP REST API" plugin
+  </Step>
+  <Step title="Install Pro Version">
+    Follow the installation steps above to install and activate JWT Auth Pro
+  </Step>
+</Steps>
+
+<Note>
+  JWT Auth Pro is 100% backwards compatible with the free version. Your existing JWT implementation will continue to work without any code changes required.
+</Note>
+
+## Installation Steps
+
+Follow these steps to get JWT Auth Pro up and running:
+
+<Steps>
+  <Step title="Purchase License">
+    1. Visit [JWT Auth Pro](https://jwtauth.pro) website
+    2. Choose your preferred license tier
+    3. Complete the purchase process
+    4. Check your email for license key and download link
+  </Step>
+
+  <Step title="Plugin Installation">
+    1. Log in to your WordPress dashboard
+    2. Navigate to **Plugins > Add New > Upload Plugin**
+    3. Click **Choose File** and select the downloaded ZIP file
+    4. Click **Install Now**
+    5. After installation, click **Activate Plugin**
+  </Step>
+
+  <Step title="License Activation">
+    1. Go to **Settings > JWT Auth Pro > Account**
+    2. Enter your license key in the activation field
+    3. Click **Activate License**
+    4. Wait for confirmation message
+  </Step>
+</Steps>
+
+## Post-Installation Setup
+
+After installation, you'll need to configure these essential settings:
+
+### Secret Key Configuration
+
+Add the following code to your `wp-config.php` file:
+
+```php
+// Add this to your wp-config.php
+define('JWT_AUTH_SECRET_KEY', 'YOUR-UNIQUE-SECRET-KEY');
+```
+
+<Warning>
+  Never share or commit your secret key. Keep it secure and unique for each environment.
+</Warning>
+
+### CORS Configuration (Optional)
+
+If your API clients are on different domains:
+
+1. Go to **Settings > JWT Auth Pro > Settings**
+2. Enable CORS Support
+3. Add your allowed domains
+4. Save changes
+
+## Verify Installation
+
+To verify your installation is working correctly:
+
+<CodeGroup>
+  ```bash Test Authentication
+  curl -X POST \
+    https://your-site.com/wp-json/jwt-auth/v1/token \
+    -H "Content-Type: application/json" \
+    -d '{"username": "your-username", "password": "your-password"}'
+  ```
+
+  ```json Response
+  {
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vand0LnRlc3QiLCJpYXQiOjE3MzkxNTM0NjcsIm5iZiI6MTczOTE1MzQ2NywiZXhwIjoxNzM5NzU4MjY3LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.HbhV8GcC_ghqDj0y9B27iKbe6aDKO6P4pIgTJAs7-PM",
+  "user_id": 1,
+  "user_email": "user@example.com",
+  "user_nicename": "username",
+  "user_display_name": "Username",
+  "refresh_token": "4c0fda4cbeacccad65ebdade95f5bda5"
+}
+  ```
+</CodeGroup>
+
+## Troubleshooting
+
+If you encounter any issues during installation, check these common solutions:
+
+- Ensure your WordPress version is compatible
+- Verify PHP version requirements
+- Check if REST API is accessible
+- Confirm SSL certificate is valid
+- Verify license key is active
+
+<Note>
+  For additional support, visit our [support portal](https://jwt-auth.pro/support) or contact our team with your license key ready.
+</Note>

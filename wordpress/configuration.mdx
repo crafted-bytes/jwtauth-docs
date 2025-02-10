@@ -1,0 +1,50 @@
+---
+title: Configuration
+description: "Configure JWT Authentication Pro in WordPress"
+---
+
+All settings can be managed through the WordPress admin interface at **Settings > JWT Auth Pro**. Let's explore the available configuration options.
+
+## Token Settings
+
+Configure how JWT tokens are generated and managed:
+
+### Available Options:
+
+- **JWT Expiration**: Control how long access tokens remain valid (default: 7 days)
+- **Refresh Token Expiration**: Set the lifespan of refresh tokens (default: 30 days)
+- **Signing Algorithm**: Choose the algorithm for token signing (default: HS256)
+- **CORS Support**: Enable/disable CORS for cross-origin requests
+
+## User Settings
+
+Control token behavior based on user actions:
+
+- **Revoke on Password Change**: Automatically revoke all tokens when a user changes their password (default: true)
+- **Revoke on Role Change**: Revoke tokens when a user's role is modified (default: true)
+- **Revoke on Email Change**: Invalidate tokens when a user updates their email (default: true)
+- **Delete on User Delete**: Remove all tokens when a user is deleted (default: true)
+
+## Data Management
+
+Configure how JWT Auth Pro handles data:
+
+- **Analytics Retention**: Control how long authentication analytics are stored (options: 30, 90, 180, 360 days, or Forever)
+
+<Warning>
+  Setting Analytics Retention to "Forever" may significantly increase your database size over time, depending on your site's traffic and authentication activity. Consider using a finite retention period for optimal performance.
+</Warning>
+
+- **Delete on Deactivation**: Choose whether to remove all plugin data upon deactivation (default: true)
+
+<Warning>
+  When Delete on Deactivation is enabled, all plugin data will be permanently deleted upon plugin deactivation. This action cannot be undone, and data can only be recovered if you have a database backup prior to deactivation.
+</Warning>
+
+- **Anonymize IP**: Option to anonymize IP addresses in analytics data (default: false)
+
+---
+
+<Note>
+  All configuration options can be managed through the WordPress admin interface at **Settings > JWT Auth Pro**. The constants in `wp-config.php` are optional and will override the settings in the admin interface if defined.
+</Note>

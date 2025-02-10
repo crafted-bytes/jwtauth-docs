@@ -1,0 +1,55 @@
+---
+title: Overview
+description: "JWT Auth Pro is a premium WordPress plugin that provides secure, robust, and developer-friendly JWT (JSON Web Token) authentication for WordPress REST API."
+---
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="OAuth 2.0 Authentication" icon="lock">
+    Complete authentication flow with token generation, validation, and refresh mechanisms
+  </Card>
+  <Card title="Token Management" icon="key">
+    Advanced token lifecycle with refresh tokens, expiration control, and family tracking
+  </Card>
+  <Card title="Security Suite" icon="shield-check">
+    Rate limiting, IP tracking, and automatic token revocation on security events
+  </Card>
+  <Card title="Analytics Dashboard" icon="chart-line">
+    Real-time monitoring of token usage, API requests, and security events
+  </Card>
+</CardGroup>
+
+## How It Works
+
+JWT Auth Pro implements a secure OAuth 2.0 compliant authentication flow. Here's how the authentication process works in your WordPress application:
+
+<Steps>
+  <Step title="Authentication Request">
+    Client sends credentials to the authentication endpoint to obtain JWT tokens
+  </Step>
+  <Step title="Token Usage">
+    Use the JWT token to authenticate REST API requests via Authorization header
+  </Step>
+  <Step title="Token Refresh">
+    Use refresh token to obtain new access tokens without re-authentication
+  </Step>
+  <Step title="Token Monitoring">
+    Track and manage tokens through the analytics dashboard
+  </Step>
+</Steps>
+
+## Security Best Practices
+
+JWT Auth Pro comes with built-in security features to protect your WordPress application. Here are the key security measures you should be aware of:
+
+<Check>
+  Automatic token revocation on password/email changes
+</Check>
+<Check>
+  Configurable token expiration times
+</Check>
+
+<Check>
+  Secure refresh token rotation
+</Check>

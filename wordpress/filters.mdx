@@ -1,0 +1,211 @@
+---
+title: Filters
+description: "JWT Auth Pro provides a comprehensive set of filters that allow you to customize its behavior. Each filter is documented below with its description and usage example."
+---
+
+
+
+## Token Generation and Validation
+
+### Authentication Filters
+
+#### `jwt_auth_before_authenticate`
+Allows you to modify the user object before the authentication process begins.
+```php
+add_filter('jwt_auth_before_authenticate', function($user) {
+    // Perform additional user validation
+    if ($user->has_cap('custom_capability')) {
+        return new WP_Error('unauthorized', 'User not allowed');
+    }
+    return $user;
+});
+```
+
+#### `jwt_auth_issued_at`
+Allows you to change the token issuance timestamp (iat claim) for token timing synchronization.
+```php
+add_filter('jwt_auth_issued_at', function($timestamp) {
+    // Add a 5-minute buffer
+    return $timestamp + (5 * MINUTE_IN_SECONDS);
+});
+```
+
+#### `jwt_auth_issuer`
+Allows you to change the token issuer (iss claim) for multi-site setups or custom API endpoints.
+```php
+add_filter('jwt_auth_issuer', function($issuer) {
+    return 'https://api.yoursite.com';
+});
+```
+
+#### `jwt_auth_not_before`
+Allows you to set when the token becomes valid (nbf claim) for token activation control.
+```php
+add_filter('jwt_auth_not_before', function($time, $issued_at) {
+    // Token becomes valid 5 minutes after issuance
+    return $issued_at + (5 * MINUTE_IN_SECONDS);
+}, 10, 2);
+```
+
+#### `jwt_auth_expire`
+Allows you to customize when the token will expire (exp claim) based on roles or conditions.
+```php
+add_filter('jwt_auth_expire', function($expiration, $issued_at) {
+    // Set expiration to 14 days
+    return $issued_at + (14 * DAY_IN_SECONDS);
+}, 10, 2);
+```
+
+#### `jwt_auth_token_user_data`
+Allows you to modify the user data stored in the token payload.
+```php
+add_filter('jwt_auth_token_user_data', function($data, $user) {
+    return array_merge($data, [
+        'role' => $user->roles[0],
+        'display_name' => $user->display_name,
+        'email' => $user->user_email
+    ]);
+}, 10, 2);
+```
+
+#### `jwt_auth_token_before_sign`
+Allows you to modify the complete token payload before signing.
+```php
+add_filter('jwt_auth_token_before_sign', function($token, $user) {
+    $token['custom_claim'] = 'custom_value';
+    return $token;
+}, 10, 2);
+```
+
+#### `jwt_auth_algorithm`
+Allows you to change the algorithm used for token signing.
+```php
+add_filter('jwt_auth_algorithm', function($algorithm) {
+    return 'HS384'; // Change to HS384 instead of default HS256
+});
+```
+
+#### `jwt_auth_token_before_dispatch`
+Allows you to modify the authentication response before it's sent to the client.
+```php
+add_filter('jwt_auth_token_before_dispatch', function($response, $user) {
+    $response['user_email'] = $user->user_email;
+    return $response;
+}, 10, 2);
+```
+
+### Refresh Token Filters
+
+#### `jwt_auth_refresh_token_generation`
+Allows you to change how refresh tokens are generated for external providers.
+```php
+add_filter('jwt_auth_refresh_token_generation', function($token) {
+    return md5(uniqid() . time()); // Use MD5 for token generation
+});
+```
+
+#### `jwt_auth_refresh_token_expiration`
+Allows you to customize refresh token lifetime based on roles or conditions.
+```php
+add_filter('jwt_auth_refresh_token_expiration', function($expiration) {
+    return 60 * DAY_IN_SECONDS; // Set to 60 days
+});
+```
+
+#### `jwt_auth_refresh_token_data_before_update`
+Allows you to modify refresh token data before storage for token rotation.
+```php
+add_filter('jwt_auth_refresh_token_data_before_update', function($token_data, $user_id) {
+    $token_data['custom_field'] = 'custom_value';
+    return $token_data;
+}, 10, 2);
+```
+
+## Security and Settings
+
+### Security Filters
+
+#### `jwt_auth_security_headers`
+Allows you to modify security headers sent with API responses for CORS and security policies.
+```php
+add_filter('jwt_auth_security_headers', function($headers) {
+    $headers['X-Custom-Security'] = 'value';
+    return $headers;
+});
+```
+
+#### `jwt_auth_error_messages`
+Allows you to customize authentication error messages for localization.
+```php
+add_filter('jwt_auth_error_messages', function($messages) {
+    $messages['jwt_auth_invalid_token'] = 'Custom invalid token message';
+    return $messages;
+});
+```
+
+#### `jwt_auth_error_status`
+Allows you to modify HTTP status codes for errors and API compliance.
+```php
+add_filter('jwt_auth_error_status', function($status, $code) {
+    if ($code === 'jwt_auth_invalid_token') {
+        return 401; // Change status to 401
+    }
+    return $status;
+}, 10, 2);
+```
+
+#### `jwt_auth_pro_anonymize_ip`
+Allows you to control IP address anonymization for GDPR compliance.
+```php
+add_filter('jwt_auth_pro_anonymize_ip', function($anonymize) {
+    return true; // Always anonymize IPs
+});
+```
+
+## Token Management
+
+### Token Actions
+
+#### `jwt_auth_pro_revoke_tokens_on_password_change`
+Allows you to control token revocation on password changes for security policies.
+```php
+add_filter('jwt_auth_pro_revoke_tokens_on_password_change', function($should_revoke, $user_id) {
+    // Only revoke tokens for specific user roles
+    $user = get_user_by('ID', $user_id);
+    return in_array('administrator', $user->roles);
+}, 10, 2);
+```
+
+#### `jwt_auth_pro_delete_tokens`
+Allows you to control when tokens are deleted for custom retention policies.
+```php
+add_filter('jwt_auth_pro_delete_tokens', function($should_delete, $user_id) {
+    // Prevent token deletion for specific users
+    return $user_id !== 1; // Don't delete admin tokens
+}, 10, 2);
+```
+
+### IP and Location
+
+#### `jwt_auth_pro_ip_headers`
+Allows you to specify which headers to check for client IP addresses.
+```php
+add_filter('jwt_auth_pro_ip_headers', function($headers) {
+    return array_merge($headers, [
+        'X-Real-IP',
+        'X-Forwarded-For'
+    ]);
+});
+```
+
+#### `jwt_auth_pro_default_ip`
+Allows you to set the fallback IP address when detection fails.
+```php
+add_filter('jwt_auth_pro_default_ip', function($ip) {
+    return '0.0.0.0';
+});
+```
+
+<Note>
+  All filters follow WordPress coding standards and can be used with the standard `add_filter()` function. The examples above show practical implementations for each filter.
+</Note>
