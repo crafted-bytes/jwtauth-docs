@@ -29,15 +29,6 @@
               "wordpress/filters",
               "wordpress/actions"
             ]
-          },
-          {
-            "group": "Admin Interface",
-            "pages": [
-              "admin/dashboard",
-              "admin/analytics",
-              "admin/token-management",
-              "admin/settings"
-            ]
           }
         ]
       },
@@ -45,38 +36,22 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "API Documentation",
+            "group": "Overview",
             "pages": ["api-reference/introduction"]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Endpoints",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete"
+              "api-reference/endpoint/token",
+              "api-reference/endpoint/validate",
+              "api-reference/endpoint/refresh"
             ]
           }
         ]
       }
     ],
     "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
+      "anchors": []
     }
   },
   "logo": {

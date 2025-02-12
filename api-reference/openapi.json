@@ -1,90 +1,56 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "JWT Auth Pro API",
+    "description": "JWT Authentication endpoints",
     "license": {
-      "name": "MIT"
+      "name": "Commercial"
     },
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
+      "url": "https://sandbox.jwtauth.pro/wp-json",
+      "description": "Sandbox environment"
+    },
     {
-      "bearerAuth": []
+      "url": "https://{your-domain}/wp-json",
+      "description": "Production environment",
+      "variables": {
+        "your-domain": {
+          "default": "example.com",
+          "description": "Your WordPress site domain"
+        }
+      }
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/jwt-auth/v1/token": {
       "post": {
-        "description": "Creates a new plant in the store",
+        "description": "Authenticates a user and returns a JWT token, for demo purposes you can use the following credentials for our sandbox environment:\n\n\nusername: hello@jwtauth.pro\n\npassword: fC^OyqNTiue8hD)y*m!Ro%B$",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/TokenRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "Authentication successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/TokenResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "unexpected error",
+          "403": {
+            "description": "Authentication failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,28 +62,64 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
+    "/jwt-auth/v1/token/validate": {
+      "post": {
+        "description": "Validates a JWT token",
+        "security": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "bearerAuth": []
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "Token is valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResponse"
+                }
+              }
+            }
           },
-          "400": {
-            "description": "unexpected error",
+          "403": {
+            "description": "Token is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jwt-auth/v1/token/refresh": {
+      "post": {
+        "description": "Refreshes an existing token using a refresh token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Refresh failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -132,55 +134,106 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "TokenRequest": {
         "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "username": {
+            "type": "string",
+            "description": "WordPress username or email",
+            "example": "your-username"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "your-password"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "RefreshRequest": {
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "description": "The refresh token obtained from the initial authentication"
+          }
+        }
+      },
+      "TokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "JWT access token"
           },
-          {
-            "required": [
-              "id"
-            ],
+          "user_id": {
+            "type": "integer",
+            "description": "WordPress user ID"
+          },
+          "user_email": {
+            "type": "string",
+            "description": "User's email address"
+          },
+          "user_nicename": {
+            "type": "string",
+            "description": "User's URL-friendly name"
+          },
+          "user_display_name": {
+            "type": "string",
+            "description": "User's display name"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Token used to obtain new access tokens"
+          }
+        }
+      },
+      "ValidationResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Response code",
+            "example": "jwt_auth_valid_token"
+          },
+          "data": {
             "type": "object",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
+              "status": {
                 "type": "integer",
-                "format": "int64"
+                "description": "HTTP status code",
+                "example": 200
               }
             }
           }
-        ]
+        }
       },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
         "type": "object",
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "jwt_auth_invalid_token"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Error message"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "integer",
+                "description": "HTTP status code"
+              }
+            }
           }
         }
       }
@@ -188,7 +241,8 @@
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

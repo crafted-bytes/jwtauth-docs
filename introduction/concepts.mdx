@@ -1,11 +1,10 @@
 ---
 title: Core Concepts
-description: "Understanding the core concepts of JWT Authentication"
+description: "JSON Web Tokens are an open standard (RFC 7519) for securely transmitting information between parties as a JSON object. In WordPress REST API authentication:
+"
 ---
 
 ## JSON Web Tokens (JWT)
-
-JSON Web Tokens are an open standard (RFC 7519) for securely transmitting information between parties as a JSON object. In WordPress REST API authentication:
 
 <CardGroup cols={2}>
   <Card title="Structure" icon="layer-group">
@@ -69,13 +68,9 @@ Understanding how tokens are managed throughout their lifetime:
     Prevents brute force attacks by limiting authentication attempts
   </Card>
   <Card title="Token Blacklisting" icon="ban">
-    Maintains a list of invalidated tokens for additional security
+    Maintains a list of revoked tokens for additional security and logging
   </Card>
   <Card title="Automatic Revocation" icon="rotate">
     Invalidates tokens on security-critical user actions, like password changes, email changes, and more.
   </Card>
 </CardGroup>
-
-<Note>
-  Understanding these concepts is crucial for implementing secure authentication in your WordPress REST API applications.
-</Note>

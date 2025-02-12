@@ -1,33 +1,42 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: API Reference
+description: "JWT Auth Pro provides a set of REST API endpoints for authentication and token management. All endpoints are accessible under the `/wp-json/jwt-auth/v1` namespace."
 ---
-
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
-
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Most endpoints require authentication using JWT tokens. To authenticate requests, include the token in the Authorization header:
+
+```bash
+Authorization: Bearer your-jwt-token
+```
+
+## Base URL
+
+The base URL for all API endpoints is your WordPress site's REST API URL:
+
+```bash
+https://your-site.com/wp-json/jwt-auth/v1
+```
+
+## Response Format
+
+All responses are returned in JSON format. Successful responses include the requested data, while error responses follow this structure:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "code": "error_code",
+  "message": "Human readable error message",
+  "data": {
+    "status": 403
   }
-]
+}
 ```
+
+## Rate Limiting
+
+API requests are subject to rate limiting based on your JWT Auth Pro settings. The current limits are:
+
+- Authentication attempts: 5 per minute per IP
+- Token validation: 60 per minute per token
+- Token refresh: 10 per minute per refresh token

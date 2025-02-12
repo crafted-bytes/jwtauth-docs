@@ -1,4 +1,122 @@
 ---
 title: Actions
-description: "WordPress actions available in JWT Authentication Pro"
+description: "JWT Auth Pro provides a set of actions that allow you to hook into various events. Each action is documented below with its description and usage example."
 ---
+
+## Token Events
+
+### Authentication Actions
+
+#### `jwt_auth_token_generated`
+Fires when a new JWT token is generated after successful authentication.
+```php
+add_action('jwt_auth_token_generated', function($token, $user) {
+    // Log token generation
+    error_log("New token generated for user: {$user->ID}");
+}, 10, 2);
+```
+
+#### `jwt_auth_token_refreshed`
+Fires when a token is refreshed using a refresh token.
+```php
+add_action('jwt_auth_token_refreshed', function($token, $user) {
+    // Track token refresh events
+    error_log("Token refreshed for user: {$user->ID}");
+}, 10, 2);
+```
+
+#### `jwt_auth_token_validated`
+Fires when a token is successfully validated.
+```php
+add_action('jwt_auth_token_validated', function($decoded) {
+    // Access validated token data
+    $user_id = $decoded['data']['user']['id'];
+    error_log("Token validated for user: {$user_id}");
+});
+```
+
+### Token Management
+
+#### `jwt_auth_token_revoked`
+Fires when a token is revoked.
+```php
+add_action('jwt_auth_token_revoked', function($token_id, $token) {
+    // Handle token revocation
+    error_log("Token {$token_id} has been revoked");
+}, 10, 2);
+```
+
+#### `jwt_auth_token_deleted`
+Fires when a token is deleted.
+```php
+add_action('jwt_auth_token_deleted', function($token_id, $token) {
+    // Cleanup after token deletion
+    error_log("Token {$token_id} has been deleted");
+}, 10, 2);
+```
+
+## Analytics Events
+
+#### `jwt_auth_analytics_aggregated`
+Fires when analytics data is aggregated.
+```php
+add_action('jwt_auth_analytics_aggregated', function($data) {
+    // Process aggregated analytics data
+    error_log("Analytics aggregated: " . print_r($data, true));
+});
+```
+
+#### `jwt_auth_analytics_consolidated`
+Fires when analytics data is consolidated.
+```php
+add_action('jwt_auth_analytics_consolidated', function($data) {
+    // Process consolidated analytics data
+    error_log("Analytics consolidated: " . print_r($data, true));
+});
+```
+
+#### `jwt_auth_analytics_cache_cleared`
+Fires when analytics cache is cleared.
+```php
+add_action('jwt_auth_analytics_cache_cleared', function() {
+    // Handle cache clearing event
+    error_log("Analytics cache has been cleared");
+});
+```
+
+#### `jwt_auth_analytics_cleanup_completed`
+Fires when analytics cleanup is completed.
+```php
+add_action('jwt_auth_analytics_cleanup_completed', function() {
+    // Handle cleanup completion
+    error_log("Analytics cleanup completed");
+});
+```
+
+## Error Events
+
+#### `jwt_auth_pro_error`
+Fires when various authentication errors occur.
+```php
+add_action('jwt_auth_pro_error', function($error, $context) {
+    // Handle different error contexts
+    switch ($context) {
+        case 'password_change':
+            error_log("Password change error: " . $error->get_error_message());
+            break;
+        case 'email_change':
+            error_log("Email change error: " . $error->get_error_message());
+            break;
+        case 'role_change':
+            error_log("Role change error: " . $error->get_error_message());
+            break;
+        case 'user_delete':
+            error_log("User deletion error: " . $error->get_error_message());
+            break;
+    }
+}, 10, 2);
+```
+
+<Note>
+  All actions follow WordPress coding standards and can be used with the standard `add_action()` function. The examples above show practical implementations for each action.
+</Note>

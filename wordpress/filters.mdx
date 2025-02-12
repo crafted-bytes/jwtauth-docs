@@ -68,6 +68,15 @@ add_filter('jwt_auth_token_user_data', function($data, $user) {
 }, 10, 2);
 ```
 
+#### `jwt_auth_jwt_token_data_before_update`
+Allows you to modify the token data before it's updated.
+```php
+add_filter('jwt_auth_jwt_token_data_before_update', function($tokenData, $user) {
+    $tokenData['custom_field'] = 'custom_value';
+    return $tokenData;
+}, 10, 2);
+```
+
 #### `jwt_auth_token_before_sign`
 Allows you to modify the complete token payload before signing.
 ```php
@@ -154,10 +163,10 @@ add_filter('jwt_auth_error_status', function($status, $code) {
 }, 10, 2);
 ```
 
-#### `jwt_auth_pro_anonymize_ip`
+#### `jwt_auth_anonymize_ip`
 Allows you to control IP address anonymization for GDPR compliance.
 ```php
-add_filter('jwt_auth_pro_anonymize_ip', function($anonymize) {
+add_filter('jwt_auth_anonymize_ip', function($anonymize) {
     return true; // Always anonymize IPs
 });
 ```
@@ -166,31 +175,44 @@ add_filter('jwt_auth_pro_anonymize_ip', function($anonymize) {
 
 ### Token Actions
 
-#### `jwt_auth_pro_revoke_tokens_on_password_change`
+#### `jwt_auth_revoke_tokens_on_password_change`
 Allows you to control token revocation on password changes for security policies.
 ```php
-add_filter('jwt_auth_pro_revoke_tokens_on_password_change', function($should_revoke, $user_id) {
-    // Only revoke tokens for specific user roles
-    $user = get_user_by('ID', $user_id);
-    return in_array('administrator', $user->roles);
+add_filter('jwt_auth_revoke_tokens_on_password_change', function($shouldRevoke, $userId) {
+    return $userId !== 1; // Don't revoke tokens for admin user
 }, 10, 2);
 ```
 
-#### `jwt_auth_pro_delete_tokens`
-Allows you to control when tokens are deleted for custom retention policies.
+#### `jwt_auth_revoke_tokens_on_email_change`
+Allows you to control token revocation on email changes.
 ```php
-add_filter('jwt_auth_pro_delete_tokens', function($should_delete, $user_id) {
-    // Prevent token deletion for specific users
-    return $user_id !== 1; // Don't delete admin tokens
+add_filter('jwt_auth_revoke_tokens_on_email_change', function($shouldRevoke, $userId) {
+    return true; // Always revoke tokens on email change
+}, 10, 2);
+```
+
+#### `jwt_auth_revoke_tokens_on_role_change`
+Allows you to control token revocation on role changes.
+```php
+add_filter('jwt_auth_revoke_tokens_on_role_change', function($shouldRevoke, $userId) {
+    return true; // Always revoke tokens on role change
+}, 10, 2);
+```
+
+#### `jwt_auth_delete_tokens_on_user_delete`
+Allows you to control token deletion when a user is deleted.
+```php
+add_filter('jwt_auth_delete_tokens_on_user_delete', function($shouldDelete, $userId) {
+    return true; // Always delete tokens when user is deleted
 }, 10, 2);
 ```
 
 ### IP and Location
 
-#### `jwt_auth_pro_ip_headers`
+#### `jwt_auth_ip_headers`
 Allows you to specify which headers to check for client IP addresses.
 ```php
-add_filter('jwt_auth_pro_ip_headers', function($headers) {
+add_filter('jwt_auth_ip_headers', function($headers) {
     return array_merge($headers, [
         'X-Real-IP',
         'X-Forwarded-For'
@@ -198,11 +220,35 @@ add_filter('jwt_auth_pro_ip_headers', function($headers) {
 });
 ```
 
-#### `jwt_auth_pro_default_ip`
+#### `jwt_auth_default_ip`
 Allows you to set the fallback IP address when detection fails.
 ```php
-add_filter('jwt_auth_pro_default_ip', function($ip) {
+add_filter('jwt_auth_default_ip', function($ip) {
     return '0.0.0.0';
+});
+```
+
+#### `jwt_auth_private_ip_country_code`
+Allows you to customize the country code for private IP addresses.
+```php
+add_filter('jwt_auth_private_ip_country_code', function($code) {
+    return 'LO'; // Custom code for local IPs
+});
+```
+
+#### `jwt_auth_unknown_country_code`
+Allows you to customize the country code for unknown locations.
+```php
+add_filter('jwt_auth_unknown_country_code', function($code) {
+    return 'UN'; // Custom code for unknown locations
+});
+```
+
+#### `jwt_auth_error_country_code`
+Allows you to customize the country code when geolocation fails.
+```php
+add_filter('jwt_auth_error_country_code', function($code) {
+    return 'ER'; // Custom code for errors
 });
 ```
 
