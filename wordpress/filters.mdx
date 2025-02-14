@@ -171,6 +171,40 @@ add_filter('jwt_auth_anonymize_ip', function($anonymize) {
 });
 ```
 
+### Rate Limiting Filters
+
+#### `jwt_auth_rate_limit_enabled`
+Allows you to control if rate limiting is enabled.
+```php
+add_filter('jwt_auth_rate_limit_enabled', function($enabled) {
+    return true; // Always enable rate limiting
+});
+```
+
+#### `jwt_auth_rate_limit_headers_enabled`
+Allows you to control if rate limit headers are included in responses.
+```php
+add_filter('jwt_auth_rate_limit_headers_enabled', function($enabled) {
+    return true; // Always send rate limit headers
+});
+```
+
+#### `jwt_auth_rate_limit_max_requests`
+Allows you to customize the maximum number of requests allowed in the time window.
+```php
+add_filter('jwt_auth_rate_limit_max_requests', function($maxRequests) {
+    return 10; // Allow 10 requests per window
+});
+```
+
+#### `jwt_auth_rate_limit_window_minutes`
+Allows you to customize the time window for rate limiting in minutes.
+```php
+add_filter('jwt_auth_rate_limit_window_minutes', function($windowMinutes) {
+    return 15; // Set window to 15 minutes
+});
+```
+
 ## Token Management
 
 ### Token Actions

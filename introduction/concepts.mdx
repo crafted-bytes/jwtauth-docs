@@ -74,3 +74,64 @@ Understanding how tokens are managed throughout their lifetime:
     Invalidates tokens on security-critical user actions, like password changes, email changes, and more.
   </Card>
 </CardGroup>
+
+## Rate Limiting
+
+Rate limiting is a security feature that helps protect your API from abuse by limiting the number of requests a client can make within a specific time window.
+
+### How It Works
+
+<Steps>
+  <Step title="Request Tracking">
+    Each request is tracked based on the client's IP address
+  </Step>
+  <Step title="Window Management">
+    Requests are counted within a configurable time window (default: 1 minute)
+  </Step>
+  <Step title="Limit Enforcement">
+    When limits are exceeded (default: 60 requests per minute per IP), requests are blocked with a 429 (Too Many Requests) response
+  </Step>
+  <Step title="Reset Period">
+    After the time window expires, the request count resets automatically
+  </Step>
+</Steps>
+
+### Rate Limit Headers
+
+JWT Auth Pro includes standard rate limit headers in API responses:
+
+<ResponseField name="X-RateLimit-Limit" type="integer">
+  Maximum number of requests allowed in the current time window
+</ResponseField>
+
+<ResponseField name="X-RateLimit-Remaining" type="integer">
+  Number of requests remaining in the current time window
+</ResponseField>
+
+<ResponseField name="X-RateLimit-Reset" type="timestamp">
+  Unix timestamp when the current time window expires
+</ResponseField>
+
+<ResponseField name="Retry-After" type="integer">
+  Seconds to wait before making another request (only present when rate limited)
+</ResponseField>
+
+### Default Limits
+
+Different endpoints have different rate limits to balance security and usability:
+
+- **Authentication**: 5 requests per minute per IP
+  - Protects against brute force attacks
+  - Applies to token generation endpoints
+
+- **Token Validation**: 60 requests per minute per token
+  - Higher limit for API operations
+  - Applies to protected endpoints
+
+- **Token Refresh**: 10 requests per minute per refresh token
+  - Moderate limit for token renewal
+  - Prevents refresh token abuse
+
+<Note>
+  All rate limits are configurable through the WordPress admin interface or using filters. See the [Configuration](/wordpress/configuration#rate-limiting) documentation for more details.
+</Note>

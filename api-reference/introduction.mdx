@@ -40,3 +40,30 @@ API requests are subject to rate limiting based on your JWT Auth Pro settings. T
 - Authentication attempts: 5 per minute per IP
 - Token validation: 60 per minute per token
 - Token refresh: 10 per minute per refresh token
+
+When rate limiting is enabled, the following headers are included in API responses:
+
+```bash
+X-RateLimit-Limit: 60        # Maximum requests allowed
+X-RateLimit-Remaining: 45    # Remaining requests in current window
+X-RateLimit-Reset: 1707411600    # Unix timestamp when the rate limit resets
+Retry-After: 120             # Seconds to wait when rate limit is exceeded (only on 429 responses)
+```
+
+### Rate Limit Exceeded
+
+When you exceed the rate limit, you'll receive a 429 (Too Many Requests) response:
+
+```json
+{
+  "code": "jwt_auth_rate_limited",
+  "message": "Rate limit exceeded",
+  "data": {
+    "status": 429
+  }
+}
+```
+
+<Note>
+  Rate limiting can be configured or disabled through the WordPress admin interface or using filters. See the [Configuration](/wordpress/configuration#rate-limiting) and [Filters](/wordpress/filters#rate-limiting-filters) documentation for more details.
+</Note>
