@@ -76,14 +76,13 @@
     "primary": {
       "type": "button",
       "label": "Get JWT Auth Pro",
-      "href": "https://jwtauth.pro"
+      "href": "https://jwtauth.pro?utm_source=docs&utm_medium=navbar"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/craftedbytes",
-      "github": "https://github.com/crafted-bytes/jwtauth-docs",
-      "website": "https://jwtauth.pro"
+      "x": "https://x.com/tmeister",
+      "website": "https://jwtauth.pro?utm_source=docs&utm_medium=footer"
     }
   }
 }
