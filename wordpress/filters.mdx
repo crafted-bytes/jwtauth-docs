@@ -90,7 +90,23 @@ add_filter('jwt_auth_token_before_sign', function($token, $user) {
 Allows you to change the algorithm used for token signing.
 ```php
 add_filter('jwt_auth_algorithm', function($algorithm) {
-    return 'HS384'; // Change to HS384 instead of default HS256
+    return 'RS256'; // Use RSA SHA-256 instead of default HS256
+});
+```
+
+#### `jwt_auth_secret_private_key`
+Allows you to set the private key for token signing.
+```php
+add_filter('jwt_auth_secret_private_key', function($key) {
+    return file_get_contents('/path/to/private.key');
+});
+```
+
+#### `jwt_auth_secret_public_key`
+Allows you to set the public key for token validation.
+```php
+add_filter('jwt_auth_secret_public_key', function($key) {
+    return file_get_contents('/path/to/public.key');
 });
 ```
 

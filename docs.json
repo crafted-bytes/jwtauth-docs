@@ -3,9 +3,9 @@
   "theme": "palm",
   "name": "JWT Authentication Pro",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#41419c",
+    "light": "#a2a2d4",
+    "dark": "#41419c"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -55,8 +55,8 @@
     }
   },
   "logo": {
-    "light": "",
-    "dark": ""
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [
@@ -73,8 +73,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/crafted-bytes/jwtauth-docs"
+      "x": "https://x.com/craftedbytes",
+      "github": "https://github.com/crafted-bytes/jwtauth-docs",
+      "website": "https://jwtauth.pro"
     }
   }
 }

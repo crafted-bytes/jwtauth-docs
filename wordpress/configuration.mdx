@@ -59,6 +59,135 @@ X-RateLimit-Reset: Timestamp when the rate limit resets
 Retry-After: Seconds to wait when rate limit is exceeded
 ```
 
+## Advanced Configuration
+
+### Using RSA Keys (RS256)
+
+By default, JWT Auth Pro uses HS256 (HMAC SHA-256) for token signing. You can switch to RS256 (RSA SHA-256) for enhanced security, especially in distributed systems.
+
+#### 1. Generate RSA Keys
+
+First, generate a private/public key pair:
+
+```bash
+# Generate private key
+openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:2048
+
+# Generate public key
+openssl rsa -pubout -in private.key -out public.key
+```
+
+#### 2. Configure Keys
+
+Add these filters to your theme's `functions.php` or a custom plugin:
+
+```php
+// Set the algorithm to RS256
+add_filter('jwt_auth_algorithm', function($algorithm) {
+    return 'RS256';
+});
+
+// Set the private key for token signing
+add_filter('jwt_auth_secret_private_key', function($key) {
+    return file_get_contents(ABSPATH . 'path/to/private.key');
+});
+
+// Set the public key for token validation
+add_filter('jwt_auth_secret_public_key', function($key) {
+    return file_get_contents(ABSPATH . 'path/to/public.key');
+});
+```
+
+<Warning>
+  Store your keys securely and never commit them to version control. Consider using environment variables or WordPress constants in wp-config.php to store the key paths.
+</Warning>
+
+#### 3. Key Storage Example
+
+A secure way to configure keys using constants:
+
+```php
+// In wp-config.php
+define('JWT_AUTH_PRIVATE_KEY_PATH', '/secure/path/private.key');
+define('JWT_AUTH_PUBLIC_KEY_PATH', '/secure/path/public.key');
+
+// In your code
+add_filter('jwt_auth_secret_private_key', function($key) {
+    return file_get_contents(JWT_AUTH_PRIVATE_KEY_PATH);
+});
+
+add_filter('jwt_auth_secret_public_key', function($key) {
+    return file_get_contents(JWT_AUTH_PUBLIC_KEY_PATH);
+});
+```
+
+#### 4. Using Key Strings Directly
+
+Alternatively, you can use the RSA key strings directly in your code:
+
+```php
+add_filter('jwt_auth_algorithm', function($algorithm) {
+    return 'RS256';
+});
+
+add_filter('jwt_auth_secret_private_key', function($key) {
+    return <<<EOD
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAuzWHNM5f+amCjQztc5QTfJfzCC5J4nuW+L/aOxZ4f8J3Frew
+M2c/dufrnmedsApb0By7WhaHlcqCh/ScAPyJhzkPYLae7bTVro3hok0zDITR8F6S
+JGL42JAEUk+ILkPI+DONM0+3vzk6Kvfe548tu4czCuqU8BGVOlnp6IqBHhAswNMM
+78pos/2z0CjPM4tbeXqSTTbNkXRboxjU29vSopcT51koWOgiTf3C7nJUoMWZHZI5
+HqnIhPAG9yv8HAgNk6CMk2CadVHDo4IxjxTzTTqo1SCSH2pooJl9O8at6kkRYsrZ
+WwsKlOFE2LUce7ObnXsYihStBUDoeBQlGG/BwQIDAQABAoIBAFtGaOqNKGwggn9k
+6yzr6GhZ6Wt2rh1Xpq8XUz514UBhPxD7dFRLpbzCrLVpzY80LbmVGJ9+1pJozyWc
+VKeCeUdNwbqkr240Oe7GTFmGjDoxU+5/HX/SJYPpC8JZ9oqgEA87iz+WQX9hVoP2
+oF6EB4ckDvXmk8FMwVZW2l2/kd5mrEVbDaXKxhvUDf52iVD+sGIlTif7mBgR99/b
+c3qiCnxCMmfYUnT2eh7Vv2LhCR/G9S6C3R4lA71rEyiU3KgsGfg0d82/XWXbegJW
+h3QbWNtQLxTuIvLq5aAryV3PfaHlPgdgK0ft6ocU2de2FagFka3nfVEyC7IUsNTK
+bq6nhAECgYEA7d/0DPOIaItl/8BWKyCuAHMss47j0wlGbBSHdJIiS55akMvnAG0M
+39y22Qqfzh1at9kBFeYeFIIU82ZLF3xOcE3z6pJZ4Dyvx4BYdXH77odo9uVK9s1l
+3T3BlMcqd1hvZLMS7dviyH79jZo4CXSHiKzc7pQ2YfK5eKxKqONeXuECgYEAyXlG
+vonaus/YTb1IBei9HwaccnQ/1HRn6MvfDjb7JJDIBhNClGPt6xRlzBbSZ73c2QEC
+6Fu9h36K/HZ2qcLd2bXiNyhIV7b6tVKk+0Psoj0dL9EbhsD1OsmE1nTPyAc9XZbb
+OPYxy+dpBCUA8/1U9+uiFoCa7mIbWcSQ+39gHuECgYAz82pQfct30aH4JiBrkNqP
+nJfRq05UY70uk5k1u0ikLTRoVS/hJu/d4E1Kv4hBMqYCavFSwAwnvHUo51lVCr/y
+xQOVYlsgnwBg2MX4+GjmIkqpSVCC8D7j/73MaWb746OIYZervQ8dbKahi2HbpsiG
+8AHcVSA/agxZr38qvWV54QKBgCD5TlDE8x18AuTGQ9FjxAAd7uD0kbXNz2vUYg9L
+hFL5tyL3aAAtUrUUw4xhd9IuysRhW/53dU+FsG2dXdJu6CxHjlyEpUJl2iZu/j15
+YnMzGWHIEX8+eWRDsw/+Ujtko/B7TinGcWPz3cYl4EAOiCeDUyXnqnO1btCEUU44
+DJ1BAoGBAJuPD27ErTSVtId90+M4zFPNibFP50KprVdc8CR37BE7r8vuGgNYXmnI
+RLnGP9p3pVgFCktORuYS2J/6t84I3+A17nEoB4xvhTLeAinAW/uTQOUmNicOP4Ek
+2MsLL2kHgL8bLTmvXV4FX+PXphrDKg1XxzOYn0otuoqdAQrkK4og
+-----END RSA PRIVATE KEY-----
+EOD;
+});
+
+add_filter('jwt_auth_secret_public_key', function($key) {
+    return <<<EOD
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuzWHNM5f+amCjQztc5QT
+fJfzCC5J4nuW+L/aOxZ4f8J3FrewM2c/dufrnmedsApb0By7WhaHlcqCh/ScAPyJ
+hzkPYLae7bTVro3hok0zDITR8F6SJGL42JAEUk+ILkPI+DONM0+3vzk6Kvfe548t
+u4czCuqU8BGVOlnp6IqBHhAswNMM78pos/2z0CjPM4tbeXqSTTbNkXRboxjU29vS
+opcT51koWOgiTf3C7nJUoMWZHZI5HqnIhPAG9yv8HAgNk6CMk2CadVHDo4IxjxTz
+TTqo1SCSH2pooJl9O8at6kkRYsrZWwsKlOFE2LUce7ObnXsYihStBUDoeBQlGG/B
+wQIDAQAB
+-----END PUBLIC KEY-----
+EOD;
+});
+```
+
+<Warning>
+  While using key strings directly in code is possible, it's recommended to store them in secure environment variables or files for better security and key management.
+</Warning>
+
+#### Benefits of RS256
+
+- **Asymmetric Encryption**: Different keys for signing and verification
+- **Better Security**: Private key can be kept secret on the authentication server
+- **Scalability**: Public key can be distributed to multiple verification servers
+- **Standard Compliance**: Widely used in enterprise applications
+
 ---
 
 <Note>
