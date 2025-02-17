@@ -1,0 +1,89 @@
+---
+title: 'Cron Tasks'
+description: 'Learn about the automated tasks that JWT Auth Pro schedules in WordPress'
+---
+
+<Note>
+  JWT Auth Pro schedules several automated tasks to handle analytics data aggregation and cleanup. These tasks are essential for maintaining the performance and data management of your WordPress site.
+</Note>
+
+<CardGroup cols={1}>
+  <Card title="Daily Analytics" icon="chart-line">
+    Aggregates daily analytics data at midnight UTC to maintain performance and provide insights.
+  </Card>
+  <Card title="Weekly Consolidation" icon="calendar-week">
+    Performs deep analytics consolidation every Monday at 1 AM UTC for historical data.
+  </Card>
+  <Card title="Data Cleanup" icon="broom">
+    Manages data retention based on your configuration to maintain optimal database performance.
+  </Card>
+</CardGroup>
+
+## Daily Analytics Aggregation
+
+**Hook Name**: `jwt_auth_daily_analytics`
+**Schedule**: Daily at midnight (UTC)
+
+This task aggregates the analytics data from the previous day into summary records for efficient dashboard access. The aggregation process collects and summarizes:
+- Total requests
+- Successful vs failed requests
+- Unique users
+- Average response times
+- Event types (token generation, validation, refresh)
+
+## Weekly Analytics Consolidation
+
+**Hook Name**: `jwt_auth_weekly_consolidation`
+**Schedule**: Weekly on Monday at 1 AM (UTC)
+
+This task performs a deeper consolidation of analytics data:
+- Processes data from the previous 7 complete days
+- Ensures data consistency
+- Optimizes storage and query performance
+- Maintains historical trends and patterns
+
+## Analytics Cleanup
+
+**Hook Name**: `jwt_auth_cleanup_analytics`
+**Schedule**: Daily
+
+This task manages the retention of analytics data based on your settings:
+- Removes analytics records older than the configured retention period
+- Respects the retention days setting from the admin dashboard
+- Skips cleanup if retention is set to "forever" (-1)
+- Helps maintain database performance and size
+
+## Configuration
+
+You can configure the tasks through the JWT Auth Pro settings panel:
+
+1. Navigate to Settings > JWT Auth Pro > Data Management
+2. Adjust the Analytics Retention Days setting
+3. Configure Data Anonymization options
+
+When the plugin is deactivated:
+- All scheduled tasks are automatically removed using `wp_clear_scheduled_hook()`
+- If "Delete data on deactivation" is enabled, all related data will be removed
+- Database tables and options are cleaned up
+
+## Actions and Filters
+
+```php
+// Fires after daily analytics aggregation
+do_action('jwt_auth_analytics_aggregated', [
+    'rows_affected' => $count,
+    'start_date' => $startDate,
+    'end_date' => $endDate,
+]);
+
+// Fires after weekly analytics consolidation
+do_action('jwt_auth_analytics_consolidated', [
+    'start_date' => $startDate,
+    'end_date' => $endDate,
+    'days_processed' => $count,
+]);
+```
+
+<Warning>
+  These actions allow you to hook into the process and perform additional tasks. Be careful when adding hooks to these actions as they run automatically in the background.
+</Warning>

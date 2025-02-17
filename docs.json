@@ -27,7 +27,8 @@
             "pages": [
               "wordpress/configuration",
               "wordpress/filters",
-              "wordpress/actions"
+              "wordpress/actions",
+              "wordpress/cron-tasks"
             ]
           },
           {
