@@ -1,0 +1,158 @@
+---
+title: 'Bruno API Collection'
+description: 'Get started with JWT Authentication Pro using Bruno API client'
+---
+
+<Info>
+  Our Bruno collection provides a basic set of API requests and automated tests for JWT Authentication Pro, designed for the developer to extend the collection to their needs.
+</Info>
+
+## Collection Contents
+
+<ResponseField name="Token Generation" required>
+  ```bash Route
+  POST /wp-json/jwt-auth/v1/token
+  ```
+  - Generate JWT tokens with username/password
+  - Includes validation tests for token format
+  - Validates user data response
+</ResponseField>
+
+<ResponseField name="Token Validation" required>
+  ```bash Route
+  POST /wp-json/jwt-auth/v1/validate
+  ```
+  - Validate existing JWT tokens
+  - Test token validity and expiration
+  - Verify token signature
+</ResponseField>
+
+<ResponseField name="Token Refresh" required>
+  ```bash Route
+  POST /wp-json/jwt-auth/v1/refresh
+  ```
+  - Refresh expired tokens
+  - Automatic token management
+  - Verify new token generation
+</ResponseField>
+
+<ResponseField name="User Information" required>
+  ```bash Route
+  GET /wp-json/jwt-auth/v1/me
+  ```
+  - Retrieve user details
+  - Validate user data structure
+  - Test authorization flow
+</ResponseField>
+
+## Installation
+
+<Steps>
+  <Step title="Install Bruno">
+    First, install Bruno by following the [official installation guide](https://docs.usebruno.com/introduction/installation.html)
+  </Step>
+  <Step title="Download Collection">
+    Download or view the collection:
+    <CardGroup cols={2}>
+      <Card
+        title="Download Collection"
+        icon="download"
+        href="https://gist.github.com/Tmeister/0aeed628ebe5c395c09c78486ff0d078/archive/9706c442e38ee3a1b35affad222b361028c277bd.zip"
+      >
+        JWT Auth Pro Bruno Collection (ZIP)
+      </Card>
+      <Card
+        title="View Source"
+        icon="code"
+        href="https://gist.github.com/Tmeister/0aeed628ebe5c395c09c78486ff0d078"
+      >
+        View collection source on GitHub
+      </Card>
+    </CardGroup>
+  </Step>
+  <Step title="Extract Files">
+    Extract the downloaded ZIP file to your project directory
+  </Step>
+</Steps>
+
+## Environment Setup
+
+<Tabs>
+  <Tab title="Using Bruno UI">
+    <Steps>
+      <Step title="Open Environment Settings">
+        1. Open Bruno and load the collection
+        2. Click on "Environments" in the right top corner
+        3. Select "local" environment
+      </Step>
+      <Step title="Configure Variables">
+        Update the following variables in the environment editor:
+        <ParamField path="baseURL" type="string" required>
+          Your WordPress site URL (e.g., https://your-site.com)
+        </ParamField>
+        <ParamField path="username" type="string" required>
+          Your WordPress username
+        </ParamField>
+        <ParamField path="password" type="string" required>
+          Your WordPress password
+        </ParamField>
+      </Step>
+      <Step title="Save Changes">
+        Click the "Save" button to apply your changes
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Using Command Line">
+    <Steps>
+      <Step title="Navigate to Environments">
+        Go to the `environments` directory in the collection
+      </Step>
+      <Step title="Create Local Environment">
+        Copy `local.env.example.json` to `local.env.json`
+      </Step>
+      <Step title="Configure Variables">
+        <CodeGroup>
+          ```json Configuration
+          {
+            "baseURL": "https://your-wordpress-site.com",
+            "username": "your-username",
+            "password": "your-password"
+          }
+          ```
+        </CodeGroup>
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+<Note>
+  Both methods achieve the same result. Choose the one that best fits your workflow.
+</Note>
+
+## Running Tests
+
+<CodeGroup>
+  ```bash Run All Tests
+  bru run --env local jwt-auth-pro
+  ```
+
+  ```bash Run Single Test
+  bru run --env local jwt-auth-pro/token.bru
+  ```
+</CodeGroup>
+
+<Tip>
+  You can use the `--env` flag to switch between different environments (local, staging, production)
+</Tip>
+
+## Additional Resources
+
+<CardGroup cols={1}>
+  <Card
+    title="Bruno Docs"
+    icon="book"
+    href="https://docs.usebruno.com/"
+  >
+    Official Bruno documentation
+  </Card>
+</CardGroup>

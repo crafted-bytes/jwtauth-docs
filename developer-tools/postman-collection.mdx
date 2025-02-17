@@ -1,0 +1,176 @@
+---
+title: 'Postman API Collection'
+description: 'Get started with JWT Authentication Pro using Postman'
+---
+
+<Info>
+  Our Postman collection provides a basic set of API requests and automated tests for JWT Authentication Pro, designed for the developer to extend the collection to their needs.
+</Info>
+
+## Collection Contents
+
+<ResponseField name="Token Generation" required>
+  ```bash Route
+  POST /wp-json/jwt-auth/v1/token
+  ```
+  - Generate JWT tokens with credentials
+  - Pre-request scripts for auth
+  - Response validation tests
+</ResponseField>
+
+<ResponseField name="Token Validation" required>
+  ```bash Route
+  POST /wp-json/jwt-auth/v1/validate
+  ```
+  - Validate JWT tokens
+  - Automatic header injection
+  - Token status verification
+</ResponseField>
+
+<ResponseField name="Token Refresh" required>
+  ```bash Route
+  POST /wp-json/jwt-auth/v1/refresh
+  ```
+  - Refresh expired tokens
+  - Auto token management
+  - Token rotation tests
+</ResponseField>
+
+<ResponseField name="User Information" required>
+  ```bash Route
+  GET /wp-json/jwt-auth/v1/me
+  ```
+  - Get user profile data
+  - Auth header handling
+  - Response validation
+</ResponseField>
+
+## Installation
+
+<Steps>
+  <Step title="Install Postman">
+    First, install Postman by downloading it from the [official website](https://www.postman.com/downloads/)
+  </Step>
+  <Step title="Download Collection">
+    Download or view the collection:
+    <CardGroup cols={2}>
+      <Card
+        title="Download Collection"
+        icon="download"
+        href="https://gist.github.com/Tmeister/7750f7b868368d28d16608309f2e00f7/archive/9e7f163d383e61859276b2e7a5b6a9d1ceb5a69b.zip"
+      >
+        JWT Auth Pro Postman Collection (ZIP)
+      </Card>
+      <Card
+        title="View Source"
+        icon="code"
+        href="https://gist.github.com/Tmeister/7750f7b868368d28d16608309f2e00f7"
+      >
+        View collection source on GitHub
+      </Card>
+    </CardGroup>
+  </Step>
+  <Step title="Import Collection">
+    Import the downloaded collection file into Postman
+  </Step>
+</Steps>
+
+## Environment Setup
+
+<Tabs>
+  <Tab title="Using Postman UI">
+    <Steps>
+      <Step title="Open Environment Settings">
+        1. Open Postman and select the imported collection
+        2. Click on "Environments" in the left sidebar
+        3. Create a new environment named "JWT Auth Pro"
+      </Step>
+      <Step title="Configure Variables">
+        Add the following variables in the environment editor:
+        <ParamField path="baseURL" type="string" required>
+          Your WordPress site URL (e.g., https://your-site.com)
+        </ParamField>
+        <ParamField path="username" type="string" required>
+          Your WordPress username
+        </ParamField>
+        <ParamField path="password" type="string" required>
+          Your WordPress password
+        </ParamField>
+      </Step>
+      <Step title="Save Changes">
+        Click the "Save" button to apply your changes
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Using Environment File">
+    <Steps>
+      <Step title="Create Environment File">
+        Create a new file named `jwt-auth-pro.postman_environment.json`
+      </Step>
+      <Step title="Configure Variables">
+        <CodeGroup>
+          ```json Configuration
+          {
+            "name": "JWT Auth Pro",
+            "values": [
+              {
+                "key": "baseURL",
+                "value": "https://your-wordpress-site.com",
+                "type": "string",
+                "enabled": true
+              },
+              {
+                "key": "username",
+                "value": "your-username",
+                "type": "string",
+                "enabled": true
+              },
+              {
+                "key": "password",
+                "value": "your-password",
+                "type": "string",
+                "enabled": true
+              }
+            ]
+          }
+          ```
+        </CodeGroup>
+      </Step>
+      <Step title="Import Environment">
+        Import the environment file into Postman
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+<Note>
+  Both methods achieve the same result. Choose the one that best fits your workflow.
+</Note>
+
+## Running Tests
+
+<CodeGroup>
+  ```bash Run All Tests
+  newman run jwt-auth-pro-postman.json -e jwt-auth-pro.postman_environment.json
+  ```
+
+  ```bash Run Single Test
+  newman run jwt-auth-pro-postman.json -e jwt-auth-pro.postman_environment.json --folder "Token Generation"
+  ```
+</CodeGroup>
+
+<Tip>
+  You can use Newman, Postman's command-line collection runner, to automate your API tests in CI/CD pipelines
+</Tip>
+
+## Additional Resources
+
+<CardGroup cols={1}>
+  <Card
+    title="Postman Docs"
+    icon="book"
+    href="https://learning.postman.com/docs/getting-started/introduction/"
+  >
+    Official Postman documentation
+  </Card>
+</CardGroup>

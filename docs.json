@@ -29,6 +29,14 @@
               "wordpress/filters",
               "wordpress/actions"
             ]
+          },
+          {
+            "group": "Developer Tools",
+            "pages": [
+              "developer-tools/overview",
+              "developer-tools/bruno-collection",
+              "developer-tools/postman-collection"
+            ]
           }
         ]
       },
