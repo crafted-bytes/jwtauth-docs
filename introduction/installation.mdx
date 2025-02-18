@@ -128,15 +128,16 @@ To verify your installation is working correctly:
   ```
 </CodeGroup>
 
-### Dashboard Data Updates
+## Caching Data
 
+The dashboard data is subject to caching:
+- General status metrics refresh every 8 hours
+- Chart data updates every 24 hours
+- Token listing shows real-time data without caching
+
+When first setting up, please allow up to 8 hours for initial dashboard data to appear.
 <Note>
-  The dashboard data is subject to caching:
-  - General status metrics refresh every 8 hours
-  - Chart data updates every 24 hours
-  - Token listing shows real-time data without caching
-
-  When first setting up, please allow up to 8 hours for initial dashboard data to appear.
+  If you need to deactivate the caching on the general stats, change the constant `WP_DEBUG` to true in your `wp-config.php` file.
 </Note>
 
 ## Troubleshooting
@@ -150,5 +151,5 @@ If you encounter any issues during installation, check these common solutions:
 - Verify license key is active
 
 <Note>
-  For additional support, visit our [support portal](https://jwt-auth.pro/support) or contact our team with your license key ready.
+  For additional support, visit our [support portal](https://jwtauth.freshdesk.com/support/tickets/new) or contact our team with your license key ready.
 </Note>
