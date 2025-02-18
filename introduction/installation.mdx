@@ -74,6 +74,15 @@ Follow these steps to get JWT Auth Pro up and running:
 
 After installation, you'll need to configure these essential settings:
 
+### Permalink Configuration
+
+Configure your WordPress permalinks:
+
+1. Go to **Settings > Permalinks**
+2. Select "Post name" option (`https://your-site.com/sample-post/`)
+3. Avoid default permalink structure (`https://your-site.com/?p=123`)
+4. Save changes
+
 ### Secret Key Configuration
 
 Add the following code to your `wp-config.php` file:
@@ -82,7 +91,6 @@ Add the following code to your `wp-config.php` file:
 // Add this to your wp-config.php
 define('JWT_AUTH_SECRET_KEY', 'YOUR-UNIQUE-SECRET-KEY');
 ```
-
 <Warning>
   Never share or commit your secret key. Keep it secure and unique for each environment.
 </Warning>
@@ -119,6 +127,17 @@ To verify your installation is working correctly:
 }
   ```
 </CodeGroup>
+
+### Dashboard Data Updates
+
+<Note>
+  The dashboard data is subject to caching:
+  - General status metrics refresh every 8 hours
+  - Chart data updates every 24 hours
+  - Token listing shows real-time data without caching
+
+  When first setting up, please allow up to 8 hours for initial dashboard data to appear.
+</Note>
 
 ## Troubleshooting
 
