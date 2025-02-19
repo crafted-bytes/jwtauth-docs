@@ -10,10 +10,6 @@
   },
   "servers": [
     {
-      "url": "https://sandbox.jwtauth.pro/wp-json",
-      "description": "Sandbox environment"
-    },
-    {
       "url": "https://{your-domain}/wp-json",
       "description": "Production environment",
       "variables": {
@@ -27,7 +23,7 @@
   "paths": {
     "/jwt-auth/v1/token": {
       "post": {
-        "description": "Authenticates a user and returns a JWT token, for demo purposes you can use the following credentials for our sandbox environment:\n\n\nusername: hello@jwtauth.pro\n\npassword: fC^OyqNTiue8hD)y*m!Ro%B$",
+        "description": "Authenticates a user and returns a JWT token",
         "requestBody": {
           "required": true,
           "content": {
