@@ -1,0 +1,148 @@
+---
+title: Version 0.2.0
+description: "Token self-revocation, improved admin UI, CORS fixes, and enhanced testing infrastructure"
+---
+
+<Card title="Version 0.2.0 - Current Release" color="#41419c">
+  **Release Date**: June 30, 2025  
+  **Status**: Current Stable Version  
+  **Compatibility**: WordPress 5.0-6.7, PHP 8.1+
+</Card>
+
+Version 0.2.0 represents a significant step forward in JWT Authentication Pro's evolution, focusing on enhanced security control, user experience improvements, and development infrastructure.
+
+## 🚀 New Features
+
+### Token Self-Revocation API Endpoint
+
+Users can now programmatically revoke their own tokens, providing enhanced security control for applications and users.
+
+```http
+POST /wp-json/jwt-auth/v1/token/revoke
+Authorization: Bearer <your-token>
+```
+
+**Benefits:**
+- Enhanced security for user-initiated logouts
+- Better control over token lifecycle
+- Improved compliance with security best practices
+
+
+## 🛠️ Improvements
+
+### Modern Admin Interface Redesign
+
+Completely redesigned admin interface with improved navigation and user experience.
+
+**Key Improvements:**
+- Clean, modern design following WordPress design guidelines
+- Improved navigation and user flow
+- Better responsive design for mobile devices
+- Enhanced accessibility features
+- Intuitive configuration wizards
+
+### Enhanced UI Components
+
+Upgraded user interface components throughout the plugin.
+
+- Modern form controls and inputs
+- Improved data visualization in analytics
+- Better loading states and user feedback
+- Consistent design language across all interfaces
+
+### Optimized Development Workflow
+
+Improved CI/CD pipeline for streamlined development and deployment.
+
+- Automated testing on multiple PHP versions
+- Enhanced code quality checks
+- Streamlined release process
+- Better documentation generation
+
+## 🐛 Bug Fixes
+
+### CORS Headers for JavaScript Clients
+
+**Issue**: JavaScript clients couldn't access rate limiting headers via CORS  
+**Fix**: Properly exposed rate limiting headers through CORS configuration
+
+```javascript
+// Now JavaScript clients can access these headers
+const rateLimit = response.headers.get('X-RateLimit-Limit');
+const remaining = response.headers.get('X-RateLimit-Remaining');
+const reset = response.headers.get('X-RateLimit-Reset');
+```
+
+### Authentication Token Validation
+
+**Issue**: Authentication issues with token validation and null pointer errors  
+**Fix**: Improved error handling and validation logic
+
+- Better null checks in token validation
+- Improved error messages for debugging
+- More robust token parsing and verification
+
+### Improved Error Handling
+
+Enhanced error handling and user feedback throughout the plugin.
+
+- More descriptive error messages
+- Better logging for troubleshooting
+- Improved user notifications for configuration issues
+
+## 📈 Performance
+
+### Optimized Code Base
+
+- Reduced memory usage in token operations
+- Faster database queries for analytics
+- Improved caching mechanisms
+- Streamlined API response times
+
+### Enhanced CI/CD Pipeline
+
+- Faster test execution
+- Parallel test running
+- Optimized build processes
+- Reduced deployment times
+
+## 🛠️ Development Improvements
+
+### Comprehensive Testing Infrastructure
+
+<Note>
+  This section is relevant for plugin development and quality assurance. End users don't need to interact with these features.
+</Note>
+
+Added robust testing framework for better reliability and quality assurance.
+
+- **Unit Tests**: Comprehensive PHP unit test coverage
+- **Integration Tests**: End-to-end API testing
+- **Frontend Tests**: React component testing with Vitest
+- **E2E Tests**: Full application testing with Playwright
+
+## 🔗 Related Documentation
+
+- **[API Reference](/api-reference/endpoint/revoke)** - Learn about the new token revocation endpoint
+- **[Configuration](/wordpress/configuration)** - Explore the updated admin interface
+
+---
+
+## Getting Help
+
+If you encounter any issues:
+
+<CardGroup cols={2}>
+  <Card title="Email Support" icon="envelope" href="mailto:hello@jwtauth.pro">
+    Contact our support team directly
+  </Card>
+  <Card title="Visit JWT Auth Pro" icon="globe" href="https://jwtauth.pro">
+    Learn more about JWT Auth Pro
+  </Card>
+</CardGroup>
+
+---
+
+<Note>
+  This release focuses on stability, security, and user experience. All existing functionality remains unchanged while adding powerful new capabilities.
+</Note>
