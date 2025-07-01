@@ -36,6 +36,15 @@ description: 'Get started with JWT Authentication Pro using Bruno API client'
   - Verify new token generation
 </ResponseField>
 
+<ResponseField name="Token Revocation" required>
+  ```bash Route
+  POST /wp-json/jwt-auth/v1/token/revoke
+  ```
+  - Revoke active JWT tokens
+  - Test logout functionality
+  - Verify token invalidation
+</ResponseField>
+
 <ResponseField name="User Information" required>
   ```bash Route
   GET /wp-json/jwt-auth/v1/me

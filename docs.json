@@ -53,7 +53,8 @@
             "pages": [
               "api-reference/endpoint/token",
               "api-reference/endpoint/validate",
-              "api-reference/endpoint/refresh"
+              "api-reference/endpoint/refresh",
+              "api-reference/endpoint/revoke"
             ]
           }
         ]

@@ -138,6 +138,53 @@ When the access token expires, use the refresh token to get a new one:
   ```
 </CodeGroup>
 
+### 4. Revoke Token (Logout)
+
+When a user logs out or you need to invalidate a token, use the revoke endpoint:
+
+<CodeGroup>
+  ```bash cURL
+  curl -X POST \
+    https://your-site.com/wp-json/jwt-auth/v1/token/revoke \
+    -H "Authorization: Bearer YOUR-JWT-TOKEN"
+  ```
+
+  ```javascript JavaScript
+  const response = await fetch('https://your-site.com/wp-json/jwt-auth/v1/token/revoke', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (response.ok) {
+    // Token revoked successfully, clear stored tokens
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
+    // Redirect to login page or update UI
+  }
+  ```
+
+  ```php PHP - WordPress
+  $response = wp_remote_post( rest_url('jwt-auth/v1/token/revoke'), [
+    'headers' => [
+      'Authorization' => 'Bearer ' . $token
+    ]
+  ]);
+
+  if ( is_wp_error( $response ) ) {
+    // Handle error
+    $error_message = $response->get_error_message();
+  } else {
+    $result = json_decode( wp_remote_retrieve_body( $response ) );
+    if ( $result->code === 'jwt_auth_token_revoked' ) {
+      // Token revoked successfully, clear stored tokens
+      // Redirect to login page or update session
+    }
+  }
+  ```
+</CodeGroup>
+
 <Note>
   Remember to never expose your JWT secret key or store tokens in plain text. Always use secure storage methods appropriate for your platform.
 </Note>
